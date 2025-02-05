@@ -1,0 +1,178 @@
+
+Data sources means which provides data 
+
+Types of data sources :
+
+--->flat files like .txt,xml etc they provide data (file hanlding) 
+
+--->collection objects also contains data like array ,arraylist etc (programming like for loops and for each loop etc  )
+
+--->tables also contain data (to reqtrive data sql is used,ado.net etc )
+
+The same data u want to access from different data sources provided in easy way 
+then u will use linq 
+
+if u are using linq to access objects in memory objects then it is called linqtoobjects
+
+if u are using linq to access sql then it is called as linq to sql 
+
+thrid party softwares access linq to amazon is also there 
+
+
+
+The acronym LINQ stands for Language Integrated Query.
+
+Microsoft’s query language is
+fully integrated and offers easy data access from in-memory objects, databases, XML
+documents, and many more. 
+
+In your syllabus they have given only linq to objects so we will be doing demos only on this 
+
+
+syntax will be like sql way but select comes last and from comes first and in between where ,order by and other functionalities can be used .
+
+
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace ConsoleApplication5
+{
+    class Program
+    {
+        static void Main(string[] args)
+        {
+            int[] numbers = new int[] {12,34,78,90,1,67,11,123,33,66,99,31,82,10,7 };
+
+            string[] names = new string[] {"ravi","kiran","krishna","kumar","sita","Mahesh" };
+
+            var query = from number in numbers where number > 20 select number;
+
+            var sumquery = (from number in numbers select number).Sum();
+
+            var oddnum = from number in numbers where number % 2 != 0 select number;
+
+            var nameswithK = from name in names where name.StartsWith("k") orderby name select name;
+
+            var noofcharacters = from name in names select name;
+
+            Console.WriteLine("The elements greater than 20 are :\n");
+
+            foreach(var element in query )
+            {
+                Console.Write("{0,4}", element.ToString());
+
+            }
+            Console.WriteLine();
+            Console.WriteLine("The sum of elements in array  is {0}",sumquery);
+            Console.WriteLine("The elements which are odd in the list are :\n");
+
+            foreach (var element in oddnum)
+            {
+                Console.Write("{0,4}", element.ToString());
+
+            }
+            Console.WriteLine();
+            Console.WriteLine("The names of people starting with K");
+            foreach(var element in nameswithK)
+            {
+
+                Console.WriteLine("{0}", element);
+            }
+
+            foreach(var element in noofcharacters)
+            {
+                Console.WriteLine("{0,4} is having {1} charcaters", element, element.Length);
+
+            }
+            Console.ReadLine();
+
+        }
+    }
+}
+
+
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace ConsoleApplication6
+{
+
+   public  class Customer
+    {
+        public int CustomerID { set; get; }
+        public string FirstName { set; get; }
+        public string LastName { set; get; }
+        public string City { set; get; }
+
+
+    }
+
+    public class CustomerRepository
+    {
+
+        public static List<Customer> Retrive()
+        {
+            List<Customer> custlist = new List<Customer>();
+
+            custlist.Add(new Customer { CustomerID = 101, FirstName = "suresh", LastName = "babu", City = "Hyderabad" });
+            custlist.Add(new Customer { CustomerID = 102, FirstName = "Mahesh", LastName = "naidu", City = "Mysore" });
+            custlist.Add(new Customer { CustomerID = 103, FirstName = "Kranthi", LastName = "kumari", City = "Bangalore" });
+            custlist.Add(new Customer { CustomerID = 104, FirstName = "Narendra", LastName = "Jha", City = "Delhi" });
+            custlist.Add(new Customer { CustomerID = 105, FirstName = "Vithal", LastName = "Kumar", City = "Hyderabad" });
+
+            return custlist;
+
+            
+        }
+
+
+
+    }
+    class Program
+    {
+        static void Main(string[] args)
+        {
+
+
+            var custlist = CustomerRepository.Retrive();
+            var concatnames = from cust in custlist select cust.FirstName + " " + cust.LastName;
+            Console.WriteLine("The complete name of customers :");
+            Console.WriteLine("*************************************");
+            foreach(var element in concatnames)
+            {
+                Console.WriteLine("{0,10}", element);
+
+            }
+
+            Console.WriteLine("Check customer presence enter id of customer ");
+            int id = Convert.ToInt16(Console.ReadLine());
+            
+            var checkuser = from cust in custlist
+                            where cust.custid == id
+                            select cust;
+            Customer foundcustomer = checkuser.FirstOrDefault();
+            if (foundcustomer!=null )
+            {
+                Console.WriteLine("the person with this id is there and name is {0}",
+                    foundcustomer.FirstName);
+            }
+            else
+            {
+                Console.WriteLine("the person is not available ...");
+            }
+            Console.ReadLine();
+        }
+    }
+}
+
+
+
+
+
+
